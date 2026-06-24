@@ -39,7 +39,7 @@ export default function Header() {
                 <a href="#" onClick={(e) => handleNavClick(e, 'body')} className="flex items-center">
                     <img
                         src="/assets/eloorh-logo.jpeg"
-                        alt="Eloorh RH"
+                        alt="Eloorh"
                         className="h-12 w-auto object-contain rounded-full"
                     />
                 </a>
