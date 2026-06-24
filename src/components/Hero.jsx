@@ -15,7 +15,7 @@ export default function Hero() {
             style={{
                 backgroundImage: "url('/assets/eloorh-banner.jpeg')",
                 backgroundSize: 'cover',
-                backgroundPosition: 'center top',
+                backgroundPosition: 'right top',
             }}
         >
             {/* Dark overlay */}
@@ -24,10 +24,6 @@ export default function Hero() {
             {/* Content */}
             <div className="section-container relative z-10 py-24">
                 <div className="max-w-2xl animate-fade-in-up">
-                    <span className="inline-block text-sm font-semibold uppercase tracking-widest text-primary-200 mb-4">
-                        Eloorh RH
-                    </span>
-
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
                         Conectando{' '}
                         <span className="text-primary-200">Talentos</span>{' '}
@@ -39,7 +35,7 @@ export default function Hero() {
                         pessoas. Da atração de talentos ao desenvolvimento organizacional.
                     </p>
 
-                    <div className="flex flex-wrap gap-4">
+                    {/* <div className="flex flex-wrap gap-4">
                         <button
                             onClick={() => handleScroll('#curriculos')}
                             className="btn-primary"
@@ -53,7 +49,7 @@ export default function Hero() {
                         >
                             Nossos Serviços
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
 

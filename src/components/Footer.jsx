@@ -25,7 +25,7 @@ export default function Footer() {
                     <div className="lg:col-span-1">
                         <img
                             src="/assets/eloorh-logo.jpeg"
-                            alt="Eloorh RH"
+                            alt="Eloorh"
                             className="h-14 w-auto rounded-full mb-4 bg-white p-1"
                         />
                         <p className="text-sm leading-relaxed text-primary-300">
@@ -76,7 +76,7 @@ export default function Footer() {
 
                 {/* Divider */}
                 <div className="border-t border-primary-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-primary-400">
-                    <p>© {YEAR} Eloorh RH. Todos os direitos reservados.</p>
+                    <p>© {YEAR} Eloorh. Todos os direitos reservados.</p>
                 </div>
             </div>
         </footer>

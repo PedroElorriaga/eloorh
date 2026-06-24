@@ -13,9 +13,9 @@ function App() {
             <main>
                 <Hero />
                 <Services />
-                <Team />
-                <ResumeForm />
-                <Contact />
+                {/* <Team /> */}
+                {/* <ResumeForm /> */}
+                {/* <Contact /> */}
             </main>
             <Footer />
         </div>

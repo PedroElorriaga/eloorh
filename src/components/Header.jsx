@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
 
 const NAV_LINKS = [
-    { label: 'Serviços', href: '#servicos' },
-    { label: 'Equipe', href: '#equipe' },
-    { label: 'Currículos', href: '#curriculos' },
-    { label: 'Contato', href: '#contato' },
+    // { label: 'Serviços', href: '#servicos' },
+    // { label: 'Equipe', href: '#equipe' },
+    // { label: 'Currículos', href: '#curriculos' },
+    // { label: 'Contato', href: '#contato' },
 ]
 
 export default function Header() {
