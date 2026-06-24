@@ -61,15 +61,15 @@ export default function Footer() {
                         <ul className="space-y-2 text-sm text-primary-300">
                             <li>
                                 <a href="mailto:pedrohes2002@outlook.com" className="hover:text-white transition-colors break-all">
-                                    pedrohes2002@outlook.com
+                                    EMAIL NANDA (MVP)
                                 </a>
                             </li>
                             <li>
                                 <a href="https://wa.me/5511973352818" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                                    (11) 97335-2818
+                                    COLOCAR NUMERO DA NADA (MVP)
                                 </a>
                             </li>
-                            <li>Barueri, SP</li>
+                            <li>ENDEREÇO NANDA (MVP)</li>
                         </ul>
                     </div>
                 </div>
