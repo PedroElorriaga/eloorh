@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Mail, Phone, MapPin, CheckCircle } from 'lucide-react'
+import { Mail, MessageCircleMore, MapPin, CheckCircle } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const INITIAL = { nome: '', email: '', assunto: '', mensagem: '' }
@@ -55,19 +55,19 @@ export default function Contact() {
                         <InfoItem
                             icon={Mail}
                             label="E-mail"
-                            value="pedrohes2002@outlook.com"
-                            href="mailto:pedrohes2002@outlook.com"
+                            value="consultoria.eloorh@gmail.com"
+                            href="mailto:consultoria.eloorh@gmail.com"
                         />
                         <InfoItem
-                            icon={Phone}
+                            icon={MessageCircleMore}
                             label="Telefone / WhatsApp"
-                            value="(11) 97335-2818"
-                            href="https://wa.me/5511973352818"
+                            value="(35) 99978-4561"
+                            href="https://wa.me/5535999784561"
                         />
                         <InfoItem
                             icon={MapPin}
                             label="Localização"
-                            value="Barueri, SP"
+                            value="Extrema, MG"
                         />
 
                         <div className="pt-4 border-t border-primary-700">

@@ -35,7 +35,7 @@ export default function Hero() {
                         pessoas. Da atração de talentos ao desenvolvimento organizacional.
                     </p>
 
-                    {/* <div className="flex flex-wrap gap-4">
+                    <div className="flex flex-wrap gap-4">
                         <button
                             onClick={() => handleScroll('#curriculos')}
                             className="btn-primary"
@@ -49,17 +49,17 @@ export default function Hero() {
                         >
                             Nossos Serviços
                         </button>
-                    </div> */}
+                    </div>
                 </div>
             </div>
 
             {/* Scroll indicator */}
-            {/* <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1 text-white/60 text-xs animate-bounce">
+            <div className="absolute bottom-8 left-0 right-0 mx-auto w-fit z-10 flex flex-col items-center gap-1 text-white/60 text-xs animate-bounce">
                 <span>Role para baixo</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 5v14M5 12l7 7 7-7" />
                 </svg>
-            </div> */}
+            </div>
         </section>
     )
 }

@@ -1,8 +1,8 @@
 const NAV = [
     { label: 'Serviços', href: '#servicos' },
-    // { label: 'Equipe', href: '#equipe' },
-    // { label: 'Currículos', href: '#curriculos' },
-    // { label: 'Contato', href: '#contato' },
+    { label: 'Equipe', href: '#equipe' },
+    { label: 'Currículos', href: '#curriculos' },
+    { label: 'Contato', href: '#contato' },
 ]
 
 const YEAR = new Date().getFullYear()
@@ -60,16 +60,16 @@ export default function Footer() {
                         </h4>
                         <ul className="space-y-2 text-sm text-primary-300">
                             <li>
-                                <a href="mailto:pedrohes2002@outlook.com" className="hover:text-white transition-colors break-all">
-                                    EMAIL NANDA (MVP)
+                                <a href="mailto:consultoria.eloorh@gmail.com" className="hover:text-white transition-colors break-all">
+                                    consultoria.eloorh@gmail.com
                                 </a>
                             </li>
                             <li>
-                                <a href="https://wa.me/5511973352818" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                                    COLOCAR NUMERO DA NADA (MVP)
+                                <a href="https://wa.me/5535999784561" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                                    (35) 99978-4561
                                 </a>
                             </li>
-                            <li>ENDEREÇO NANDA (MVP)</li>
+                            <li>Extrema, MG</li>
                         </ul>
                     </div>
                 </div>
