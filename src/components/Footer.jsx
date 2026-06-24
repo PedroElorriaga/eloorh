@@ -1,8 +1,8 @@
 const NAV = [
     { label: 'Serviços', href: '#servicos' },
-    { label: 'Equipe', href: '#equipe' },
-    { label: 'Currículos', href: '#curriculos' },
-    { label: 'Contato', href: '#contato' },
+    // { label: 'Equipe', href: '#equipe' },
+    // { label: 'Currículos', href: '#curriculos' },
+    // { label: 'Contato', href: '#contato' },
 ]
 
 const YEAR = new Date().getFullYear()
