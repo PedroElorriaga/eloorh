@@ -8,6 +8,7 @@ const TEAM = [
         bio: 'Profissional com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, com ampla atuação em gestão de pessoas, recrutamento e seleção, legislação trabalhista e processos organizacionais. Utiliza sua experiência para desenvolver soluções estratégicas na atração e seleção de talentos, conectando empresas aos profissionais mais alinhados às suas necessidades e contribuindo para a formação de equipes de alta performance.',
         initials: 'FR',
         color: 'from-primary-700 to-primary-500',
+        linkedinUrl: 'https://www.linkedin.com/in/fernandasramalho/',
     },
     {
         name: 'Gersonita Pinheiro',
@@ -15,6 +16,7 @@ const TEAM = [
         bio: 'Com mais de 30 anos de experiência em Recursos Humanos, construí minha carreira acreditando que pessoas são o principal diferencial de qualquer organização. Minha atuação une visão estratégica, experiência prática e um olhar humano para apoiar empresas na atração, seleção e desenvolvimento de talentos. Na Eloo RH, meu compromisso é criar conexões que gerem valor tanto para as empresas quanto para os profissionais, contribuindo para relações de trabalho mais sólidas e resultados sustentáveis.',
         initials: 'GP',
         color: 'from-slate-700 to-slate-500',
+        linkedinUrl: 'https://www.linkedin.com/in/gersonita-pinheiro-12576429/',
     },
 ]
 
@@ -45,7 +47,7 @@ export default function Team() {
 
                 {/* Cards */}
                 <div className="flex flex-wrap justify-center gap-8">
-                    {TEAM.map(({ name, role, bio, initials, color }, i) => (
+                    {TEAM.map(({ name, role, bio, initials, color, linkedinUrl }, i) => (
                         <div
                             key={name}
                             className="w-full max-w-sm animate-on-scroll bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-center flex flex-col items-center"
@@ -60,13 +62,16 @@ export default function Team() {
                             <p className="text-slate-500 text-sm leading-relaxed flex-1">{bio}</p>
 
                             {/* LinkedIn placeholder */}
-                            <button
+                            <a
+                                href={linkedinUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 aria-label={`LinkedIn de ${name}`}
-                                className="mt-6 p-2 rounded-full bg-slate-100 text-slate-400 hover:bg-primary-100 hover:text-primary-700 transition-colors cursor-default"
+                                className="mt-6 p-2 rounded-full bg-slate-100 text-slate-400 hover:bg-primary-100 hover:text-primary-700 transition-colors"
                                 title="LinkedIn"
                             >
                                 <Linkedin size={18} />
-                            </button>
+                            </a>
                         </div>
                     ))}
                 </div>
