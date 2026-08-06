@@ -13,7 +13,7 @@ function App() {
             <main>
                 <Hero />
                 <Services />
-                {/* <Team /> */}
+                <Team />
                 <ResumeForm />
                 <Contact />
             </main>

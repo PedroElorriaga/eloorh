@@ -3,25 +3,18 @@ import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const TEAM = [
     {
-        name: 'Ana Carolina Silva',
-        role: 'Gerente de Recursos Humanos',
-        bio: 'Mais de 10 anos de experiência em gestão de pessoas, clima organizacional e desenvolvimento de liderança em empresas de médio e grande porte.',
-        initials: 'AC',
+        name: 'Fernanda Ramalho',
+        role: 'Gestão de RH',
+        bio: 'Profissional com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, com ampla atuação em gestão de pessoas, recrutamento e seleção, legislação trabalhista e processos organizacionais. Utiliza sua experiência para desenvolver soluções estratégicas na atração e seleção de talentos, conectando empresas aos profissionais mais alinhados às suas necessidades e contribuindo para a formação de equipes de alta performance.',
+        initials: 'FR',
         color: 'from-primary-700 to-primary-500',
     },
     {
-        name: 'Carlos Eduardo Oliveira',
+        name: 'Gersonita Pinheiro',
         role: 'Especialista em Recrutamento & Seleção',
-        bio: 'Especialista em atração de talentos com ampla expertise em metodologias ágeis de seleção, entrevistas comportamentais e mapeamento de perfis.',
-        initials: 'CE',
+        bio: 'Com mais de 30 anos de experiência em Recursos Humanos, construí minha carreira acreditando que pessoas são o principal diferencial de qualquer organização. Minha atuação une visão estratégica, experiência prática e um olhar humano para apoiar empresas na atração, seleção e desenvolvimento de talentos. Na Eloo RH, meu compromisso é criar conexões que gerem valor tanto para as empresas quanto para os profissionais, contribuindo para relações de trabalho mais sólidas e resultados sustentáveis.',
+        initials: 'GP',
         color: 'from-slate-700 to-slate-500',
-    },
-    {
-        name: 'Mariana Santos Ferreira',
-        role: 'Consultora de Treinamento & Desenvolvimento',
-        bio: 'Facilitadora certificada com foco em desenvolvimento de competências, programas de liderança e construção de trilhas de aprendizagem corporativas.',
-        initials: 'MS',
-        color: 'from-indigo-700 to-indigo-500',
     },
 ]
 
@@ -51,11 +44,11 @@ export default function Team() {
                 </div>
 
                 {/* Cards */}
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="flex flex-wrap justify-center gap-8">
                     {TEAM.map(({ name, role, bio, initials, color }, i) => (
                         <div
                             key={name}
-                            className="animate-on-scroll bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-center flex flex-col items-center"
+                            className="w-full max-w-sm animate-on-scroll bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-center flex flex-col items-center"
                             style={{ transitionDelay: `${i * 120}ms` }}
                         >
                             {/* Avatar */}
