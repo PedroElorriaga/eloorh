@@ -36,3 +36,14 @@ jobs:
           publish_branch: deploy
           publish_dir: ./dist
           force_orphan: true
+
+      - name: Trigger Hostinger redeploy
+        run: |
+          curl -s -o response.json -w "%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.HOSTINGER_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            https://api.hostinger.com/v1/hosting/eloorh.com/git/deploy \
+          | tee http_code.txt
+          echo "HTTP status: $(cat http_code.txt)"
+          echo "Response: $(cat response.json)"
