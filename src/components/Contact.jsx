@@ -20,17 +20,51 @@ export default function Contact() {
     const [fields, setFields] = useState(INITIAL)
     const [errors, setErrors] = useState({})
     const [submitted, setSubmitted] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitError, setSubmitError] = useState('')
 
     const set = (key, val) => {
         setFields((f) => ({ ...f, [key]: val }))
         if (errors[key]) setErrors((e) => { const n = { ...e }; delete n[key]; return n })
+        if (submitError) setSubmitError('')
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const errs = validate(fields)
         if (Object.keys(errs).length) { setErrors(errs); return }
-        setSubmitted(true)
+
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+
+        try {
+            setIsSubmitting(true)
+            setSubmitError('')
+
+            const response = await fetch(`${apiUrl}/api/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nome: fields.nome.trim(),
+                    email: fields.email.trim(),
+                    assunto: fields.assunto.trim(),
+                    mensagem: fields.mensagem.trim(),
+                }),
+            })
+
+            const data = await response.json().catch(() => ({}))
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Nao foi possivel enviar sua mensagem.')
+            }
+
+            setSubmitted(true)
+        } catch (error) {
+            setSubmitError(error.message || 'Erro inesperado ao enviar mensagem.')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -55,19 +89,19 @@ export default function Contact() {
                         <InfoItem
                             icon={Mail}
                             label="E-mail"
-                            value="consultoria.eloorh@gmail.com"
-                            href="mailto:consultoria.eloorh@gmail.com"
+                            value="recrutamento@eloorh.com"
+                            href="mailto:recrutamento@eloorh.com"
                         />
                         <InfoItem
                             icon={MessageCircleMore}
                             label="Telefone / WhatsApp"
-                            value="(35) 99978-4561"
-                            href="https://wa.me/5535999784561"
+                            value="(35) 8417-4730"
+                            href="https://wa.me/5535984174730"
                         />
                         <InfoItem
                             icon={MapPin}
                             label="Localização"
-                            value="Extrema, MG"
+                            value="Camanducaia, MG"
                         />
 
                         <div className="pt-4 border-t border-primary-700">
@@ -89,7 +123,12 @@ export default function Contact() {
                                         Recebemos sua mensagem e retornaremos em breve. Obrigado pelo contato!
                                     </p>
                                     <button
-                                        onClick={() => { setFields(INITIAL); setSubmitted(false) }}
+                                        onClick={() => {
+                                            setFields(INITIAL)
+                                            setErrors({})
+                                            setSubmitError('')
+                                            setSubmitted(false)
+                                        }}
                                         className="btn-outline mt-2"
                                     >
                                         Nova mensagem
@@ -153,9 +192,13 @@ export default function Contact() {
                                         {errors.mensagem && <p className="error-msg">{errors.mensagem}</p>}
                                     </div>
 
-                                    <button type="submit" className="btn-primary w-full justify-center">
-                                        Enviar Mensagem
+                                    <button type="submit" className="btn-primary w-full justify-center" disabled={isSubmitting}>
+                                        {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
                                     </button>
+
+                                    {submitError && (
+                                        <p className="text-sm text-red-600 text-center">{submitError}</p>
+                                    )}
                                 </form>
                             )}
                         </div>

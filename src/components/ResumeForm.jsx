@@ -46,25 +46,69 @@ export default function ResumeForm() {
     const [errors, setErrors] = useState({})
     const [fileName, setFileName] = useState('')
     const [submitted, setSubmitted] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const [submitError, setSubmitError] = useState('')
 
     const set = (key, val) => {
         setFields((f) => ({ ...f, [key]: val }))
         if (errors[key]) setErrors((e) => { const n = { ...e }; delete n[key]; return n })
+        if (submitError) setSubmitError('')
     }
 
     const handleFile = (e) => {
         const file = e.target.files?.[0]
         if (file) {
+            const maxSize = 5 * 1024 * 1024
+            if (file.size > maxSize) {
+                setSubmitError('Arquivo muito grande. O tamanho maximo permitido e 5 MB.')
+                return
+            }
+
             setFields((f) => ({ ...f, arquivo: file }))
             setFileName(file.name)
+            if (submitError) setSubmitError('')
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const errs = validate(fields)
         if (Object.keys(errs).length) { setErrors(errs); return }
-        setSubmitted(true)
+
+        const formData = new FormData()
+        formData.append('nome', fields.nome.trim())
+        formData.append('email', fields.email.trim())
+        formData.append('telefone', fields.telefone.trim())
+        formData.append('cargo', fields.cargo.trim())
+        formData.append('area', fields.area.trim())
+        formData.append('sobre', fields.sobre.trim())
+        if (fields.arquivo) {
+            formData.append('arquivo', fields.arquivo)
+        }
+
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+
+        try {
+            setIsSubmitting(true)
+            setSubmitError('')
+
+            const response = await fetch(`${apiUrl}/api/applications`, {
+                method: 'POST',
+                body: formData,
+            })
+
+            const data = await response.json().catch(() => ({}))
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Nao foi possivel enviar sua candidatura.')
+            }
+
+            setSubmitted(true)
+        } catch (error) {
+            setSubmitError(error.message || 'Erro inesperado ao enviar candidatura.')
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const handleReset = () => {
@@ -72,6 +116,8 @@ export default function ResumeForm() {
         setErrors({})
         setFileName('')
         setSubmitted(false)
+        setSubmitError('')
+        setIsSubmitting(false)
     }
 
     return (
@@ -212,9 +258,13 @@ export default function ResumeForm() {
                             </div>
 
                             {/* Submit */}
-                            <button type="submit" className="btn-primary w-full justify-center">
-                                Enviar Candidatura
+                            <button type="submit" className="btn-primary w-full justify-center" disabled={isSubmitting}>
+                                {isSubmitting ? 'Enviando...' : 'Enviar Candidatura'}
                             </button>
+
+                            {submitError && (
+                                <p className="text-sm text-red-600 text-center">{submitError}</p>
+                            )}
 
                             <p className="text-xs text-slate-400 text-center flex items-center justify-center gap-1">
                                 <AlertCircle size={12} />

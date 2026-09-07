@@ -1,3 +1,5 @@
 node_modules
 dist/
 .github/assets
+.env
+uploads/
