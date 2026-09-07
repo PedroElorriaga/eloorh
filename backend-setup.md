@@ -98,3 +98,14 @@ npm run dev:server
 - `email` (required)
 - `assunto` (required)
 - `mensagem` (required)
+
+## 5) Production deployment (Railway)
+
+The API is deployed to Railway at `https://eloorh-production.up.railway.app`, connected to this GitHub repo:
+
+- **Start Command**: `npm run server`
+- **Environment variables**: same as `.env.example`, except:
+  - `PORT`: not set (Railway assigns it)
+  - `CORS_ORIGIN`: `https://eloorh.com` (the production frontend origin, not `localhost:5173`)
+
+The frontend build (`.github/workflows/deploy.yml`) sets `VITE_API_URL=https://eloorh-production.up.railway.app` at build time so the deployed static site calls the Railway-hosted API instead of `localhost:4000`.
