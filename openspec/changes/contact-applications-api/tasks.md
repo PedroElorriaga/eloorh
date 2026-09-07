@@ -26,4 +26,4 @@
 
 ## 5. Commit
 
-- [ ] 5.1 Review `git status`/`git diff` for the backend files and confirm no secrets (`.env`, real credentials) are staged, then commit `server/`, `database/`, `.env.example`, `backend-setup.md`, `package.json`/`package-lock.json`, and the `Contact.jsx`/`ResumeForm.jsx` changes
+- [x] 5.1 Review `git status`/`git diff` for the backend files and confirm no secrets (`.env`, real credentials) are staged, then commit `server/`, `database/`, `.env.example`, `backend-setup.md`, `package.json`/`package-lock.json`, and the `Contact.jsx`/`ResumeForm.jsx` changes
