@@ -95,7 +95,7 @@ export default function Contact() {
                         <InfoItem
                             icon={MessageCircleMore}
                             label="Telefone / WhatsApp"
-                            value="(35) 8417-4730"
+                            value="(35) 98417-4730"
                             href="https://wa.me/5535984174730"
                         />
                         <InfoItem

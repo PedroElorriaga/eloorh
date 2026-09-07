@@ -60,16 +60,16 @@ export default function Footer() {
                         </h4>
                         <ul className="space-y-2 text-sm text-primary-300">
                             <li>
-                                <a href="mailto:consultoria.eloorh@gmail.com" className="hover:text-white transition-colors break-all">
-                                    consultoria.eloorh@gmail.com
+                                <a href="mailto:recrutamento@eloorh.com" className="hover:text-white transition-colors break-all">
+                                    recrutamento@eloorh.com
                                 </a>
                             </li>
                             <li>
-                                <a href="https://wa.me/5535999784561" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
-                                    (35) 99978-4561
+                                <a href="https://wa.me/5535984174730" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
+                                    (35) 98417-4730
                                 </a>
                             </li>
-                            <li>Extrema, MG</li>
+                            <li>Camanducaia, MG</li>
                         </ul>
                     </div>
                 </div>
