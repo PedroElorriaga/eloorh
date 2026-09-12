@@ -1,39 +1,38 @@
 ## Purpose
 
-Lets visitors of the eloorh site send a message through the public contact form and have it delivered by email to the eloorh team, without requiring the visitor to have their own email client.
+Lets visitors of the eloorh site send a message through the public contact form and have it delivered to the eloorh team's WhatsApp, using the visitor's own WhatsApp account, without requiring a backend or an email client.
 
 ## ADDED Requirements
 
 ### Requirement: Contact submission validation
-The system SHALL require `nome`, `email`, `assunto`, and `mensagem` on `POST /api/contact`, and SHALL require `email` to match a valid email address format.
+The system SHALL require `nome`, `email`, `assunto`, and `mensagem` in the contact form, and SHALL require `email` to match a valid email address format, before handing the message off to WhatsApp.
 
 #### Scenario: Missing required field
 - **WHEN** a contact submission omits `nome`, `email`, `assunto`, or `mensagem` (empty or whitespace-only)
-- **THEN** the system responds with HTTP 400 and a message asking to fill in all required fields, and sends no email
+- **THEN** the system shows an inline error on each offending field and does not open WhatsApp
 
 #### Scenario: Invalid email format
 - **WHEN** a contact submission's `email` does not match a valid email address pattern
-- **THEN** the system responds with HTTP 400 and a message asking for a valid email, and sends no email
+- **THEN** the system shows an inline error asking for a valid email and does not open WhatsApp
 
-### Requirement: Contact submission delivered by email
-On a valid submission, the system SHALL deliver the message by email to the configured eloorh contact address, with the submitter's address set as the reply-to address.
+### Requirement: Contact submission handed off to WhatsApp
+On a valid submission, the system SHALL open WhatsApp addressed to the configured eloorh company number, with a message pre-filled with the submitter's name, email, subject, and message.
 
-#### Scenario: Valid submission is emailed
+#### Scenario: Valid submission opens WhatsApp
 - **WHEN** a contact submission passes validation
-- **THEN** the system sends an email to the configured contact address with the submitter's name, email, subject, and message, using the submitter's email as reply-to, and subject prefixed to identify it as a site contact message
-- **AND** the system responds with HTTP 201 confirming the message was sent
+- **THEN** the system opens `https://wa.me/<company number>?text=<pre-filled message>` in a new browser tab, where the pre-filled text identifies the message as coming from the site and carries the submitter's name, email, subject, and message
 
-### Requirement: Email delivery is a hard dependency
-The system SHALL treat email delivery as required for a successful contact submission: if the email service is not configured, or if sending fails, the submission SHALL NOT be reported as successful.
+#### Scenario: Message text is URL-encoded
+- **WHEN** the submitted fields contain line breaks, accented characters, or other characters unsafe in a URL
+- **THEN** the system percent-encodes the pre-filled text so WhatsApp receives the message exactly as typed
 
-#### Scenario: Email service not configured
-- **WHEN** a contact submission passes validation but the server has no SMTP credentials configured
-- **THEN** the system responds with HTTP 500 indicating the email service is not configured, and sends no email
+#### Scenario: Submitter sees confirmation in the site
+- **WHEN** the system has opened WhatsApp for a valid submission
+- **THEN** the contact form shows its success state so the visitor knows the hand-off happened, with the option to compose a new message
 
-#### Scenario: Email authentication failure
-- **WHEN** a contact submission passes validation but the configured SMTP credentials are rejected by the email provider
-- **THEN** the system responds with HTTP 500 indicating an SMTP authentication failure
+### Requirement: Contact delivery has no server dependency
+The contact form SHALL be entirely client-side: it SHALL NOT call the eloorh API, and the system SHALL NOT expose a contact endpoint or depend on an email service.
 
-#### Scenario: Other email delivery failure
-- **WHEN** a contact submission passes validation but the email fails to send for a reason other than authentication
-- **THEN** the system responds with HTTP 500 with a generic message asking the submitter to try again
+#### Scenario: Backend unavailable
+- **WHEN** the eloorh API is unreachable or not deployed
+- **THEN** the contact form still validates and opens WhatsApp normally, because it issues no network request of its own

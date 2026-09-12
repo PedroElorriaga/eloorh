@@ -3,6 +3,21 @@ import { Mail, MessageCircleMore, MapPin, CheckCircle } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const INITIAL = { nome: '', email: '', assunto: '', mensagem: '' }
+const WHATSAPP_NUMBER = '5535984174730'
+
+function buildWhatsAppUrl(f) {
+    const texto = [
+        '*Novo contato pelo site*',
+        '',
+        `*Nome:* ${f.nome.trim()}`,
+        `*E-mail:* ${f.email.trim()}`,
+        `*Assunto:* ${f.assunto.trim()}`,
+        '',
+        f.mensagem.trim(),
+    ].join('\n')
+
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(texto)}`
+}
 
 function validate(f) {
     const e = {}
@@ -20,51 +35,19 @@ export default function Contact() {
     const [fields, setFields] = useState(INITIAL)
     const [errors, setErrors] = useState({})
     const [submitted, setSubmitted] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitError, setSubmitError] = useState('')
 
     const set = (key, val) => {
         setFields((f) => ({ ...f, [key]: val }))
         if (errors[key]) setErrors((e) => { const n = { ...e }; delete n[key]; return n })
-        if (submitError) setSubmitError('')
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         const errs = validate(fields)
         if (Object.keys(errs).length) { setErrors(errs); return }
 
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4000'
-
-        try {
-            setIsSubmitting(true)
-            setSubmitError('')
-
-            const response = await fetch(`${apiUrl}/api/contact`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    nome: fields.nome.trim(),
-                    email: fields.email.trim(),
-                    assunto: fields.assunto.trim(),
-                    mensagem: fields.mensagem.trim(),
-                }),
-            })
-
-            const data = await response.json().catch(() => ({}))
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Nao foi possivel enviar sua mensagem.')
-            }
-
-            setSubmitted(true)
-        } catch (error) {
-            setSubmitError(error.message || 'Erro inesperado ao enviar mensagem.')
-        } finally {
-            setIsSubmitting(false)
-        }
+        window.open(buildWhatsAppUrl(fields), '_blank', 'noopener,noreferrer')
+        setSubmitted(true)
     }
 
     return (
@@ -96,7 +79,7 @@ export default function Contact() {
                             icon={MessageCircleMore}
                             label="Telefone / WhatsApp"
                             value="(35) 98417-4730"
-                            href="https://wa.me/5535984174730"
+                            href={`https://wa.me/${WHATSAPP_NUMBER}`}
                         />
                         <InfoItem
                             icon={MapPin}
@@ -118,15 +101,15 @@ export default function Contact() {
                             {submitted ? (
                                 <div className="flex flex-col items-center text-center py-8 gap-4">
                                     <CheckCircle size={56} className="text-green-500" />
-                                    <h3 className="text-xl font-bold text-primary-800">Mensagem enviada!</h3>
+                                    <h3 className="text-xl font-bold text-primary-800">WhatsApp aberto!</h3>
                                     <p className="text-slate-500 max-w-sm">
-                                        Recebemos sua mensagem e retornaremos em breve. Obrigado pelo contato!
+                                        Sua mensagem foi preenchida no WhatsApp. Confirme o envio por lá e
+                                        retornaremos em breve. Obrigado pelo contato!
                                     </p>
                                     <button
                                         onClick={() => {
                                             setFields(INITIAL)
                                             setErrors({})
-                                            setSubmitError('')
                                             setSubmitted(false)
                                         }}
                                         className="btn-outline mt-2"
@@ -192,13 +175,13 @@ export default function Contact() {
                                         {errors.mensagem && <p className="error-msg">{errors.mensagem}</p>}
                                     </div>
 
-                                    <button type="submit" className="btn-primary w-full justify-center" disabled={isSubmitting}>
-                                        {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
+                                    <button type="submit" className="btn-primary w-full justify-center">
+                                        Enviar pelo WhatsApp
                                     </button>
 
-                                    {submitError && (
-                                        <p className="text-sm text-red-600 text-center">{submitError}</p>
-                                    )}
+                                    <p className="text-xs text-slate-400 text-center">
+                                        Ao enviar, o WhatsApp abre com sua mensagem pronta para você confirmar o envio.
+                                    </p>
                                 </form>
                             )}
                         </div>

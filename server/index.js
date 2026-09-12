@@ -4,7 +4,6 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import multer from 'multer'
-import nodemailer from 'nodemailer'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createClient } from '@supabase/supabase-js'
@@ -37,28 +36,6 @@ const upload = multer({
 })
 
 const app = express()
-const smtpSecure = String(process.env.SMTP_SECURE || 'false').toLowerCase() === 'true'
-const contactToEmail = process.env.CONTACT_TO_EMAIL || 'PedroHES2002@outlook.com'
-const contactFromEmail = process.env.CONTACT_FROM_EMAIL || process.env.SMTP_USER || 'PedroHES2002@outlook.com'
-
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT || 587),
-    secure: smtpSecure,
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
-})
-
-function escapeHtml(value) {
-    return value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;')
-}
 
 app.use(helmet())
 app.use(cors({ origin: process.env.CORS_ORIGIN || 'http://localhost:5173' }))
@@ -67,70 +44,6 @@ app.use(express.json())
 
 app.get('/api/health', (_, res) => {
     res.json({ ok: true })
-})
-
-app.post('/api/contact', async (req, res) => {
-    const { nome = '', email = '', assunto = '', mensagem = '' } = req.body || {}
-
-    const nomeClean = String(nome).trim()
-    const emailClean = String(email).trim()
-    const assuntoClean = String(assunto).trim()
-    const mensagemClean = String(mensagem).trim()
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailClean)
-
-    if (!nomeClean || !emailClean || !assuntoClean || !mensagemClean) {
-        return res.status(400).json({ message: 'Preencha todos os campos obrigatorios.' })
-    }
-
-    if (!isEmailValid) {
-        return res.status(400).json({ message: 'Informe um e-mail valido.' })
-    }
-
-    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-        return res.status(500).json({ message: 'Servico de e-mail nao configurado no servidor.' })
-    }
-
-    const text = [
-        'Nova mensagem de contato',
-        `Nome: ${nomeClean}`,
-        `Email: ${emailClean}`,
-        `Assunto: ${assuntoClean}`,
-        '',
-        'Mensagem:',
-        mensagemClean,
-    ].join('\n')
-
-    const html = `
-        <h2>Nova mensagem de contato</h2>
-        <p><strong>Nome:</strong> ${escapeHtml(nomeClean)}</p>
-        <p><strong>Email:</strong> ${escapeHtml(emailClean)}</p>
-        <p><strong>Assunto:</strong> ${escapeHtml(assuntoClean)}</p>
-        <p><strong>Mensagem:</strong></p>
-        <p>${escapeHtml(mensagemClean).replace(/\n/g, '<br>')}</p>
-    `
-
-    try {
-        await transporter.sendMail({
-            from: contactFromEmail,
-            to: contactToEmail,
-            replyTo: emailClean,
-            subject: `[Contato Site] ${assuntoClean}`,
-            text,
-            html,
-        })
-
-        return res.status(201).json({ message: 'Mensagem enviada com sucesso.' })
-    } catch (error) {
-        console.error('Erro ao enviar e-mail de contato:', error)
-
-        if (error?.code === 'EAUTH') {
-            return res.status(500).json({
-                message: 'Falha na autenticacao do SMTP. Verifique as credenciais no SMTP_USER e SMTP_PASS.',
-            })
-        }
-
-        return res.status(500).json({ message: 'Erro ao enviar mensagem. Tente novamente.' })
-    }
 })
 
 app.post('/api/applications', upload.single('arquivo'), async (req, res) => {

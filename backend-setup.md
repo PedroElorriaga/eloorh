@@ -18,13 +18,6 @@ Required values:
 - `DB_POOL_SIZE`
 - `DB_SSL` (`true` for Supabase)
 - `VITE_API_URL` (example: `http://localhost:4000`)
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_SECURE`
-- `SMTP_USER`
-- `SMTP_PASS`
-- `CONTACT_TO_EMAIL` (default: `consultoria.eloorh@gmail.com`)
-- `CONTACT_FROM_EMAIL`
 
 ### Supabase example
 
@@ -39,20 +32,6 @@ DB_SSL=true
 ```
 
 If you need to use separate fields instead of `DATABASE_URL`, keep `DATABASE_URL` empty and fill `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, and `DB_NAME`.
-
-### SMTP example (contact form)
-
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=consultoria.eloorh@gmail.com
-SMTP_PASS=YOUR_GMAIL_APP_PASSWORD
-CONTACT_TO_EMAIL=consultoria.eloorh@gmail.com
-CONTACT_FROM_EMAIL=consultoria.eloorh@gmail.com
-```
-
-For Gmail, use an App Password (2-step verification enabled) instead of your normal account password.
 
 ## 2) Create database table
 
@@ -80,7 +59,6 @@ npm run dev:server
 
 - Health check: `GET /api/health`
 - Create application: `POST /api/applications`
-- Send contact email: `POST /api/contact`
 
 `POST /api/applications` expects `multipart/form-data` with:
 
@@ -92,12 +70,7 @@ npm run dev:server
 - `sobre` (optional)
 - `arquivo` (optional, PDF/DOC/DOCX, max 5MB)
 
-`POST /api/contact` expects `application/json` with:
-
-- `nome` (required)
-- `email` (required)
-- `assunto` (required)
-- `mensagem` (required)
+The contact form does not use the API: it validates in the browser and opens a pre-filled `https://wa.me/5535984174730` link so the visitor sends the message from their own WhatsApp.
 
 ## 5) Production deployment (Railway)
 
