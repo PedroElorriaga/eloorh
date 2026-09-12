@@ -32,4 +32,4 @@
 
 ## 6. Commit the WhatsApp switch
 
-- [ ] 6.1 Review the diff for `server/index.js`, `src/components/Contact.jsx`, `.env.example`, `backend-setup.md`, and `package.json`/`package-lock.json`, confirm no SMTP credentials remain anywhere in the tree, and commit
+- [x] 6.1 Review the diff for `server/index.js`, `src/components/Contact.jsx`, `.env.example`, `backend-setup.md`, and `package.json`/`package-lock.json`, confirm no SMTP credentials remain anywhere in the tree, and commit

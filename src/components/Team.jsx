@@ -5,7 +5,7 @@ const TEAM = [
     {
         name: 'Fernanda Ramalho',
         role: 'Gestão de RH',
-        bio: 'Profissional com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, com ampla atuação em gestão de pessoas, recrutamento e seleção, legislação trabalhista e processos organizacionais. Utiliza sua experiência para desenvolver soluções estratégicas na atração e seleção de talentos, conectando empresas aos profissionais mais alinhados às suas necessidades e contribuindo para a formação de equipes de alta performance.',
+        bio: 'Com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, Fernanda possui trajetória em gestão de pessoas, recrutamento e seleção, administração de pessoal, benefícios, folha de pagamento e processos trabalhistas. Sua atuação é marcada pela organização, comprometimento e busca por soluções eficientes, sempre conectando as necessidades da empresa às pessoas.',
         initials: 'FR',
         color: 'from-primary-700 to-primary-500',
         linkedinUrl: 'https://www.linkedin.com/in/fernandasramalho/',
@@ -13,7 +13,7 @@ const TEAM = [
     {
         name: 'Gersonita Pinheiro',
         role: 'Especialista em Recrutamento & Seleção',
-        bio: 'Com mais de 30 anos de experiência em Recursos Humanos, construí minha carreira acreditando que pessoas são o principal diferencial de qualquer organização. Minha atuação une visão estratégica, experiência prática e um olhar humano para apoiar empresas na atração, seleção e desenvolvimento de talentos. Na Eloo RH, meu compromisso é criar conexões que gerem valor tanto para as empresas quanto para os profissionais, contribuindo para relações de trabalho mais sólidas e resultados sustentáveis.',
+        bio: 'Com mais de 30 anos de experiência em Recursos Humanos, Gersonita construiu uma trajetória sólida em diferentes áreas da gestão de pessoas, com atuação em recrutamento e seleção, administração de pessoal, folha de pagamento, gestão de ponto, clima organizacional, processos e sistemas de RH. Sua experiência combina conhecimento técnico, visão estratégica e um olhar humano, contribuindo para identificar profissionais alinhados às necessidades de cada empresa.',
         initials: 'GP',
         color: 'from-slate-700 to-slate-500',
         linkedinUrl: 'https://www.linkedin.com/in/gersonita-pinheiro-12576429/',
@@ -38,10 +38,13 @@ export default function Team() {
             <div className="section-container">
                 {/* Heading */}
                 <div className="text-center mb-16 animate-on-scroll">
-                    <span className="section-badge">Quem somos</span>
-                    <h2 className="section-title">Nossa Equipe</h2>
+                    {/* <span className="section-badge">Quem somos</span> */}
+                    <h2 className="section-title">Quem somos</h2>
                     <p className="section-subtitle mx-auto">
-                        Profissionais experientes e comprometidos com resultados que fazem a diferença.
+                        Duas profissionais. Uma conexão. Um propósito.<br></br><br></br>
+                        A  Eloo RH nasceu de uma história construída dentro do Recursos Humanos.
+                        Foi trabalhando juntas e vivenciando de perto os desafios da área. Dessa parceria, da experiência compartilhada e de uma mesma visão sobre a importância das pessoas para o sucesso das empresas, nasceu a Eloo RH.
+                        Hoje, unimos nossas trajetórias para conectar talentos e oportunidades, oferecendo soluções em Recrutamento e Seleção e Desenvolvimento de Pessoas.
                     </p>
                 </div>
 
@@ -74,6 +77,14 @@ export default function Team() {
                             </a>
                         </div>
                     ))}
+                    <div className="text-center animate-on-scroll">
+                        <h2 className="text-center section-title">Nosso Propósito</h2>
+                        <p className="text-center section-subtitle mx-auto">
+                            Acreditamos que uma contratação vai muito além de preencher uma vaga. É conectar pessoas, competências e oportunidades.
+                            <br></br>
+                            Eloo RH — Conectando talentos e oportunidades.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
