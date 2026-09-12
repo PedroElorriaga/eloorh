@@ -9,9 +9,9 @@
 - [x] 2.1 Remove `POST /api/contact`, the nodemailer transporter, the `escapeHtml` helper, and the `contactToEmail`/`contactFromEmail`/`smtpSecure` constants from `server/index.js`, and drop `nodemailer` from `package.json` (spec: Contact delivery has no server dependency)
 - [x] 2.2 Remove the SMTP block (`SMTP_*`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`) from `.env.example` and the corresponding setup instructions from `backend-setup.md` (spec: Contact delivery has no server dependency)
 - [x] 2.3 Rewrite `handleSubmit` in `src/components/Contact.jsx` to build the pre-filled message text, percent-encode it, and open `https://wa.me/5535984174730?text=...` in a new tab, dropping the `fetch`, the `isSubmitting` state, and the `submitError` state (spec: Contact submission handed off to WhatsApp)
-- [ ] 2.4 Submit the contact form with each required field empty in turn, and with a malformed email, and verify each shows its inline error and that no WhatsApp tab opens (spec: Contact submission validation)
-- [ ] 2.5 Submit a fully valid message containing accents and line breaks, and verify WhatsApp opens in a new tab addressed to (35) 98417-4730 with the name, email, subject, and message rendered exactly as typed (spec: Contact submission handed off to WhatsApp)
-- [ ] 2.6 Verify the same valid submission on a mobile browser opens the WhatsApp app rather than WhatsApp Web, and that the form shows its success state with the "Nova mensagem" reset working (spec: Contact submission handed off to WhatsApp)
+- [x] 2.4 Submit the contact form with each required field empty in turn, and with a malformed email, and verify each shows its inline error and that no WhatsApp tab opens (spec: Contact submission validation)
+- [x] 2.5 Submit a fully valid message containing accents and line breaks, and verify WhatsApp opens in a new tab addressed to (35) 98417-4730 with the name, email, subject, and message rendered exactly as typed (spec: Contact submission handed off to WhatsApp)
+- [x] 2.6 Verify the same valid submission on a mobile browser opens the WhatsApp app rather than WhatsApp Web, and that the form shows its success state with the "Nova mensagem" reset working (spec: Contact submission handed off to WhatsApp)
 
 ## 3. Verify job-application behavior against spec
 
@@ -23,7 +23,7 @@
 
 ## 4. Frontend integration check
 
-- [ ] 4.1 Stop the backend entirely and verify the Contact form still validates and opens WhatsApp, confirming it issues no network request of its own (`src/components/Contact.jsx`, spec: Contact delivery has no server dependency)
+- [x] 4.1 Stop the backend entirely and verify the Contact form still validates and opens WhatsApp, confirming it issues no network request of its own (`src/components/Contact.jsx`, spec: Contact delivery has no server dependency)
 - [x] 4.2 Submit the Resume form (with and without a file) in the browser with the backend running and `VITE_API_URL=http://localhost:4000`, and verify the success state only appears after the API responds 201, while an induced API error surfaces the inline error message instead of a silent success (`src/components/ResumeForm.jsx`)
 
 ## 5. Commit

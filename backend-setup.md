@@ -18,6 +18,9 @@ Required values:
 - `DB_POOL_SIZE`
 - `DB_SSL` (`true` for Supabase)
 - `VITE_API_URL` (example: `http://localhost:4000`)
+- `VITE_SUPABASE_URL` (recruiter panel)
+- `VITE_SUPABASE_ANON_KEY` (recruiter panel — the **anon public** key, never the service_role key)
+- `RESUME_URL_TTL_SECONDS` (optional, default `300`)
 
 ### Supabase example
 
@@ -57,8 +60,16 @@ npm run dev:server
 
 ## 4) Endpoints
 
+Public (no authentication):
+
 - Health check: `GET /api/health`
 - Create application: `POST /api/applications`
+
+Recruiter-only (require `Authorization: Bearer <supabase access token>`):
+
+- List applications: `GET /api/applications?limit=20&offset=0`
+- Application detail: `GET /api/applications/:id`
+- Resume download link: `GET /api/applications/:id/resume`
 
 `POST /api/applications` expects `multipart/form-data` with:
 
@@ -72,7 +83,29 @@ npm run dev:server
 
 The contact form does not use the API: it validates in the browser and opens a pre-filled `https://wa.me/5535984174730` link so the visitor sends the message from their own WhatsApp.
 
-## 5) Production deployment (Railway)
+## 5) Recruiter panel (`/painel.html`)
+
+The panel is a second page in the Vite build, served at `/painel.html`. It signs recruiters
+in with Supabase Auth and reads the recruiter-only endpoints above.
+
+Setup in the Supabase dashboard:
+
+1. **Authentication > Sign In / Providers**: disable public sign-ups, so the project's anon
+   key cannot create accounts.
+2. **Authentication > Users**: create one user per recruiter (email + password) and share
+   the credentials with them. There is no self-service registration by design.
+
+The two keys are easy to confuse and the consequence is not symmetric:
+
+- `SUPABASE_ANON_KEY` → goes in `VITE_SUPABASE_ANON_KEY`, ships in the browser bundle, and
+  on its own only allows calling Auth. This is expected and safe.
+- `SUPABASE_SERVICE_ROLE_KEY` → server-side only. It bypasses Row Level Security. It must
+  never be given a `VITE_` prefix, or the static build would publish it.
+
+Resume downloads never expose the `curriculos` bucket: the API mints a signed URL per
+request, valid for `RESUME_URL_TTL_SECONDS` (default 5 minutes).
+
+## 6) Production deployment (Railway)
 
 The API is deployed to Railway at `https://eloorh-production.up.railway.app`, connected to this GitHub repo:
 
