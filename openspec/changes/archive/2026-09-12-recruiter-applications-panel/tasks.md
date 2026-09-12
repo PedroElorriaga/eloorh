@@ -28,6 +28,6 @@
 
 ## 5. Deployment
 
-- [ ] 5.1 Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to the build step in `.github/workflows/deploy.yml` as repository secrets, and verify a build run produces a `dist/` containing `painel.html`
+- [x] 5.1 Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to the build step in `.github/workflows/deploy.yml` as repository secrets, and verify a build run produces a `dist/` containing `painel.html`
 - [x] 5.2 Grep the built `dist/` for the service-role key and confirm zero matches before publishing (design: the anon key and the service-role key look alike)
-- [ ] 5.3 Deploy the API to Railway first, verify `GET /api/applications` answers 401 without a token in production, then publish the frontend and verify a recruiter can sign in at `https://eloorh.com/painel.html` and download a resume end to end
+- [x] 5.3 Deploy the API to Railway first, verify `GET /api/applications` answers 401 without a token in production, then publish the frontend and verify a recruiter can sign in at `https://eloorh.com/painel.html` and download a resume end to end
