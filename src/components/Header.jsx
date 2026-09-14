@@ -3,7 +3,7 @@ import { Menu, X } from 'lucide-react'
 
 const NAV_LINKS = [
     { label: 'Serviços', href: '#servicos' },
-    { label: 'Equipe', href: '#equipe' },
+    { label: 'Quem Somos', href: '#quem-somos' },
     { label: 'Currículos', href: '#curriculos' },
     // { label: 'Contato', href: '#contato' },
 ]

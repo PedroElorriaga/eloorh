@@ -5,7 +5,7 @@ const TEAM = [
     {
         name: 'Fernanda Ramalho',
         role: 'Gestão de RH',
-        bio: 'Com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, Fernanda possui trajetória em gestão de pessoas, recrutamento e seleção, administração de pessoal, benefícios, folha de pagamento e processos trabalhistas. Sua atuação é marcada pela organização, comprometimento e busca por soluções eficientes, sempre conectando as necessidades da empresa às pessoas.',
+        bio: 'Com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, Fernanda possui trajetória em gestão de pessoas, recrutamento e seleção, administração de pessoal, benefícios, folha de pagamento e processos trabalhistas. \n\nSua atuação é marcada pela organização, comprometimento e busca por soluções eficientes, sempre conectando as necessidades da empresa às pessoas.',
         initials: 'FR',
         color: 'from-primary-700 to-primary-500',
         linkedinUrl: 'https://www.linkedin.com/in/fernandasramalho/',
@@ -13,7 +13,7 @@ const TEAM = [
     {
         name: 'Gersonita Pinheiro',
         role: 'Especialista em Recrutamento & Seleção',
-        bio: 'Com mais de 30 anos de experiência em Recursos Humanos, Gersonita construiu uma trajetória sólida em diferentes áreas da gestão de pessoas, com atuação em recrutamento e seleção, administração de pessoal, folha de pagamento, gestão de ponto, clima organizacional, processos e sistemas de RH. Sua experiência combina conhecimento técnico, visão estratégica e um olhar humano, contribuindo para identificar profissionais alinhados às necessidades de cada empresa.',
+        bio: 'Com mais de 30 anos de experiência em Recursos Humanos, Gersonita construiu uma trajetória sólida em diferentes áreas da gestão de pessoas, com atuação em recrutamento e seleção, administração de pessoal, folha de pagamento, gestão de ponto, clima organizacional, processos e sistemas de RH. \n\nSua experiência combina conhecimento técnico, visão estratégica e um olhar humano, contribuindo para identificar profissionais alinhados às necessidades de cada empresa.',
         initials: 'GP',
         color: 'from-slate-700 to-slate-500',
         linkedinUrl: 'https://www.linkedin.com/in/gersonita-pinheiro-12576429/',
@@ -34,7 +34,7 @@ export default function Team() {
     const sectionRef = useScrollAnimation()
 
     return (
-        <section id="equipe" ref={sectionRef} className="py-24 bg-slate-50">
+        <section id="quem-somos" ref={sectionRef} className="py-24 bg-slate-50">
             <div className="section-container">
                 {/* Heading */}
                 <div className="text-center mb-16 animate-on-scroll">
@@ -61,8 +61,8 @@ export default function Team() {
 
                             {/* Info */}
                             <h3 className="text-lg font-bold text-primary-800 mt-5 mb-1">{name}</h3>
-                            <p className="text-sm font-medium text-primary-600 mb-4">{role}</p>
-                            <p className="text-slate-500 text-sm leading-relaxed flex-1">{bio}</p>
+                            {/* <p className="text-sm font-medium text-primary-600 mb-4">{role}</p> */}
+                            <p className="text-slate-500 text-sm leading-relaxed whitespace-pre-line flex-1">{bio}</p>
 
                             {/* LinkedIn placeholder */}
                             <a
@@ -81,7 +81,8 @@ export default function Team() {
                         <h2 className="text-center section-title">Nosso Propósito</h2>
                         <p className="text-center section-subtitle mx-auto">
                             Acreditamos que uma contratação vai muito além de preencher uma vaga. É conectar pessoas, competências e oportunidades.
-                            <br></br>
+                            <br />
+                            <br />
                             Eloo RH — Conectando talentos e oportunidades.
                         </p>
                     </div>
