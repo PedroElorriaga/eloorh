@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Linkedin } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
@@ -7,6 +8,7 @@ const TEAM = [
         role: 'Gestão de RH',
         bio: 'Com 16 anos de experiência em Recursos Humanos e Departamento Pessoal, Fernanda possui trajetória em gestão de pessoas, recrutamento e seleção, administração de pessoal, benefícios, folha de pagamento e processos trabalhistas. \n\nSua atuação é marcada pela organização, comprometimento e busca por soluções eficientes, sempre conectando as necessidades da empresa às pessoas.',
         initials: 'FR',
+        photo: '/assets/Fernanda.jpeg',
         color: 'from-primary-700 to-primary-500',
         linkedinUrl: 'https://www.linkedin.com/in/fernandasramalho/',
     },
@@ -15,12 +17,28 @@ const TEAM = [
         role: 'Especialista em Recrutamento & Seleção',
         bio: 'Com mais de 30 anos de experiência em Recursos Humanos, Gersonita construiu uma trajetória sólida em diferentes áreas da gestão de pessoas, com atuação em recrutamento e seleção, administração de pessoal, folha de pagamento, gestão de ponto, clima organizacional, processos e sistemas de RH. \n\nSua experiência combina conhecimento técnico, visão estratégica e um olhar humano, contribuindo para identificar profissionais alinhados às necessidades de cada empresa.',
         initials: 'GP',
+        photo: '/assets/Gersonita.jpeg',
         color: 'from-slate-700 to-slate-500',
         linkedinUrl: 'https://www.linkedin.com/in/gersonita-pinheiro-12576429/',
     },
 ]
 
-function Avatar({ initials, color }) {
+function Avatar({ name, initials, color, photo }) {
+    // Falls back to the initials circle when there is no photo or it fails to load.
+    const [photoFailed, setPhotoFailed] = useState(false)
+
+    if (photo && !photoFailed) {
+        return (
+            <img
+                src={photo}
+                alt={name}
+                loading="lazy"
+                onError={() => setPhotoFailed(true)}
+                className="w-24 h-24 rounded-full object-cover shadow-md"
+            />
+        )
+    }
+
     return (
         <div
             className={`w-24 h-24 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-2xl font-bold shadow-md select-none`}
@@ -50,14 +68,14 @@ export default function Team() {
 
                 {/* Cards */}
                 <div className="flex flex-wrap justify-center gap-8">
-                    {TEAM.map(({ name, role, bio, initials, color, linkedinUrl }, i) => (
+                    {TEAM.map(({ name, role, bio, initials, color, photo, linkedinUrl }, i) => (
                         <div
                             key={name}
                             className="w-full max-w-sm animate-on-scroll bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-center flex flex-col items-center"
                             style={{ transitionDelay: `${i * 120}ms` }}
                         >
                             {/* Avatar */}
-                            <Avatar initials={initials} color={color} />
+                            <Avatar name={name} initials={initials} color={color} photo={photo} />
 
                             {/* Info */}
                             <h3 className="text-lg font-bold text-primary-800 mt-5 mb-1">{name}</h3>
