@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ArrowLeft, Download, AlertCircle } from 'lucide-react'
 import { getApplication, getResumeLink } from './api'
 import { formatDate, formatBytes } from './format'
+import { STATUS_LABELS } from './jobOptions'
 
 export default function ApplicationDetail({ token, id, onBack, onAuthError }) {
     const [application, setApplication] = useState(null)
@@ -69,6 +70,12 @@ export default function ApplicationDetail({ token, id, onBack, onAuthError }) {
                         <Field label="Telefone" value={application.telefone} />
                         <Field label="Cargo pretendido" value={application.cargo} />
                         <Field label="Área" value={application.area} />
+                        <Field
+                            label="Vaga"
+                            value={application.vaga_id
+                                ? `${application.vaga_titulo}${application.vaga_codigo ? ` · Cód. ${application.vaga_codigo}` : ''} (${STATUS_LABELS[application.vaga_status]})`
+                                : 'Banco de talentos (candidatura sem vaga)'}
+                        />
                     </dl>
 
                     {application.sobre && (

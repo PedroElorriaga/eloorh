@@ -1,14 +1,26 @@
 import { useCallback, useEffect, useState } from 'react'
-import { LogOut } from 'lucide-react'
+import { LogOut, Users, Briefcase } from 'lucide-react'
 import { supabase, isConfigured } from './supabaseClient'
 import SignIn from './SignIn'
 import ApplicationsList from './ApplicationsList'
 import ApplicationDetail from './ApplicationDetail'
+import JobsList from './JobsList'
+import JobForm from './JobForm'
+
+const TABS = [
+    { key: 'candidaturas', label: 'Candidaturas', icon: Users },
+    { key: 'vagas', label: 'Vagas', icon: Briefcase },
+]
 
 export default function Panel() {
     const [session, setSession] = useState(null)
     const [isRestoring, setIsRestoring] = useState(true)
     const [selectedId, setSelectedId] = useState(null)
+    const [tab, setTab] = useState('candidaturas')
+    // Opening the applications list is filtered by, set from the Vagas tab.
+    const [vagaFilter, setVagaFilter] = useState(null)
+    // null = jobs list; 'new' = create form; a number = edit form for that opening.
+    const [editingJob, setEditingJob] = useState(null)
 
     useEffect(() => {
         if (!isConfigured) { setIsRestoring(false); return }
@@ -22,7 +34,12 @@ export default function Panel() {
 
         const { data: listener } = supabase.auth.onAuthStateChange((_, next) => {
             setSession(next)
-            if (!next) setSelectedId(null)
+            if (!next) {
+                setSelectedId(null)
+                setTab('candidaturas')
+                setVagaFilter(null)
+                setEditingJob(null)
+            }
         })
 
         return () => listener.subscription.unsubscribe()
@@ -30,6 +47,12 @@ export default function Panel() {
 
     const handleSignOut = useCallback(() => {
         supabase.auth.signOut()
+    }, [])
+
+    const showApplicationsFor = useCallback((job) => {
+        setVagaFilter({ id: job.id, titulo: job.titulo, codigo: job.codigo })
+        setSelectedId(null)
+        setTab('candidaturas')
     }, [])
 
     if (!isConfigured) {
@@ -57,7 +80,7 @@ export default function Panel() {
             <header className="bg-primary-800">
                 <div className="section-container py-5 flex items-center justify-between gap-4">
                     <div>
-                        <h1 className="text-white font-bold">Painel de Candidaturas</h1>
+                        <h1 className="text-white font-bold">Painel Eloo RH</h1>
                         <p className="text-primary-200 text-sm">{session.user.email}</p>
                     </div>
                     <button
@@ -70,8 +93,29 @@ export default function Panel() {
                 </div>
             </header>
 
+            <nav className="bg-white border-b border-slate-200">
+                <div className="section-container flex gap-1" role="tablist">
+                    {TABS.map(({ key, label, icon: Icon }) => (
+                        <button
+                            key={key}
+                            type="button"
+                            role="tab"
+                            aria-selected={tab === key}
+                            onClick={() => setTab(key)}
+                            className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                                tab === key
+                                    ? 'border-primary-700 text-primary-800'
+                                    : 'border-transparent text-slate-500 hover:text-primary-700'
+                            }`}
+                        >
+                            <Icon size={16} /> {label}
+                        </button>
+                    ))}
+                </div>
+            </nav>
+
             <main className="section-container py-10">
-                {selectedId ? (
+                {tab === 'candidaturas' && (selectedId ? (
                     <ApplicationDetail
                         token={session.access_token}
                         id={selectedId}
@@ -80,11 +124,31 @@ export default function Panel() {
                     />
                 ) : (
                     <ApplicationsList
+                        key={vagaFilter?.id ?? 'todas'}
                         token={session.access_token}
+                        vagaFilter={vagaFilter}
+                        onClearFilter={() => setVagaFilter(null)}
                         onSelect={setSelectedId}
                         onAuthError={handleSignOut}
                     />
-                )}
+                ))}
+
+                {tab === 'vagas' && (editingJob !== null ? (
+                    <JobForm
+                        token={session.access_token}
+                        id={editingJob === 'new' ? null : editingJob}
+                        onDone={() => setEditingJob(null)}
+                        onAuthError={handleSignOut}
+                    />
+                ) : (
+                    <JobsList
+                        token={session.access_token}
+                        onCreate={() => setEditingJob('new')}
+                        onEdit={setEditingJob}
+                        onShowApplications={showApplicationsFor}
+                        onAuthError={handleSignOut}
+                    />
+                ))}
             </main>
         </div>
     )

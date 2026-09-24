@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Menu, X } from 'lucide-react'
+import { scrollToSection } from '../utils/scrollToSection'
 
 const NAV_LINKS = [
     { label: 'Serviços', href: '#servicos' },
     { label: 'Quem Somos', href: '#quem-somos' },
+    { label: 'Vagas', href: '#vagas' },
     { label: 'Currículos', href: '#curriculos' },
     // { label: 'Contato', href: '#contato' },
 ]
@@ -21,12 +23,7 @@ export default function Header() {
     const handleNavClick = (e, href) => {
         e.preventDefault()
         setMenuOpen(false)
-        const target = document.querySelector(href)
-        if (target) {
-            const offset = 72 // header height
-            const top = target.getBoundingClientRect().top + window.scrollY - offset
-            window.scrollTo({ top, behavior: 'smooth' })
-        }
+        scrollToSection(href)
     }
 
     return (

@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Upload, CheckCircle, AlertCircle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Upload, CheckCircle, AlertCircle, Briefcase, X } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const AREAS = [
@@ -20,15 +20,16 @@ const INITIAL = {
     arquivo: null,
 }
 
-function validate(fields) {
+// Role and area come from the opening when the form is linked to one.
+function validate(fields, isLinked) {
     const errs = {}
     if (!fields.nome.trim()) errs.nome = 'Nome é obrigatório.'
     if (!fields.email.trim()) errs.email = 'E-mail é obrigatório.'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email))
         errs.email = 'Informe um e-mail válido.'
     if (!fields.telefone.trim()) errs.telefone = 'Telefone é obrigatório.'
-    if (!fields.cargo.trim()) errs.cargo = 'Cargo desejado é obrigatório.'
-    if (!fields.area) errs.area = 'Selecione uma área de interesse.'
+    if (!isLinked && !fields.cargo.trim()) errs.cargo = 'Cargo desejado é obrigatório.'
+    if (!isLinked && !fields.area) errs.area = 'Selecione uma área de interesse.'
     return errs
 }
 
@@ -40,7 +41,7 @@ function formatPhone(value) {
     return value
 }
 
-export default function ResumeForm() {
+export default function ResumeForm({ job = null, onClearJob = () => {} }) {
     const sectionRef = useScrollAnimation()
     const [fields, setFields] = useState(INITIAL)
     const [errors, setErrors] = useState({})
@@ -48,6 +49,17 @@ export default function ResumeForm() {
     const [submitted, setSubmitted] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitError, setSubmitError] = useState('')
+    // Set when the linked opening was closed after the page loaded (HTTP 409).
+    const [jobUnavailable, setJobUnavailable] = useState(false)
+
+    // Choosing an opening (again) always shows the form, keeping what was typed.
+    useEffect(() => {
+        setJobUnavailable(false)
+        if (!job) return
+        setSubmitted(false)
+        setSubmitError('')
+        setErrors((e) => { const n = { ...e }; delete n.cargo; delete n.area; return n })
+    }, [job])
 
     const set = (key, val) => {
         setFields((f) => ({ ...f, [key]: val }))
@@ -72,15 +84,19 @@ export default function ResumeForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const errs = validate(fields)
+        const errs = validate(fields, Boolean(job))
         if (Object.keys(errs).length) { setErrors(errs); return }
 
         const formData = new FormData()
         formData.append('nome', fields.nome.trim())
         formData.append('email', fields.email.trim())
         formData.append('telefone', fields.telefone.trim())
-        formData.append('cargo', fields.cargo.trim())
-        formData.append('area', fields.area.trim())
+        if (job) {
+            formData.append('vaga_id', String(job.id))
+        } else {
+            formData.append('cargo', fields.cargo.trim())
+            formData.append('area', fields.area.trim())
+        }
         formData.append('sobre', fields.sobre.trim())
         if (fields.arquivo) {
             formData.append('arquivo', fields.arquivo)
@@ -99,6 +115,11 @@ export default function ResumeForm() {
 
             const data = await response.json().catch(() => ({}))
 
+            if (response.status === 409 && job) {
+                setJobUnavailable(true)
+                return
+            }
+
             if (!response.ok) {
                 throw new Error(data.message || 'Nao foi possivel enviar sua candidatura.')
             }
@@ -112,6 +133,8 @@ export default function ResumeForm() {
     }
 
     const handleReset = () => {
+        onClearJob()
+        setJobUnavailable(false)
         setFields(INITIAL)
         setErrors({})
         setFileName('')
@@ -146,6 +169,25 @@ export default function ResumeForm() {
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                            {job && (
+                                <div className="flex items-start justify-between gap-3 bg-primary-50 border border-primary-100 rounded-xl px-4 py-3">
+                                    <p className="flex items-start gap-2 text-sm text-primary-800">
+                                        <Briefcase size={18} className="mt-0.5 shrink-0" />
+                                        <span>
+                                            Candidatura para: <strong>{job.titulo}</strong>
+                                            {job.codigo && <> (Cód. {job.codigo})</>}
+                                        </span>
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={onClearJob}
+                                        className="flex items-center gap-1 text-xs font-medium text-primary-700 hover:underline shrink-0"
+                                    >
+                                        <X size={14} /> Remover
+                                    </button>
+                                </div>
+                            )}
+
                             {/* Row 1 */}
                             <div className="grid sm:grid-cols-2 gap-6">
                                 <div>
@@ -193,7 +235,7 @@ export default function ResumeForm() {
                                     {errors.telefone && <p className="error-msg">{errors.telefone}</p>}
                                 </div>
 
-                                <div>
+                                {!job && <div>
                                     <label className="form-label" htmlFor="r-cargo">Cargo desejado *</label>
                                     <input
                                         id="r-cargo"
@@ -204,11 +246,11 @@ export default function ResumeForm() {
                                         className={`form-input ${errors.cargo ? 'form-input-error' : ''}`}
                                     />
                                     {errors.cargo && <p className="error-msg">{errors.cargo}</p>}
-                                </div>
+                                </div>}
                             </div>
 
                             {/* Area */}
-                            <div>
+                            {!job && <div>
                                 <label className="form-label" htmlFor="r-area">Área de interesse *</label>
                                 <select
                                     id="r-area"
@@ -220,7 +262,7 @@ export default function ResumeForm() {
                                     {AREAS.map((a) => <option key={a} value={a}>{a}</option>)}
                                 </select>
                                 {errors.area && <p className="error-msg">{errors.area}</p>}
-                            </div>
+                            </div>}
 
                             {/* Sobre */}
                             <div>
@@ -264,6 +306,17 @@ export default function ResumeForm() {
 
                             {submitError && (
                                 <p className="text-sm text-red-600 text-center">{submitError}</p>
+                            )}
+
+                            {jobUnavailable && (
+                                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center space-y-3">
+                                    <p className="text-sm text-amber-800">
+                                        Esta vaga não está mais disponível. Você pode enviar seus dados para o nosso banco de talentos.
+                                    </p>
+                                    <button type="button" className="btn-outline" onClick={onClearJob}>
+                                        Enviar como candidatura geral
+                                    </button>
+                                </div>
                             )}
 
                             <p className="text-xs text-slate-400 text-center flex items-center justify-center gap-1">
